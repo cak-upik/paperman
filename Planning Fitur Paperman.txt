@@ -1,0 +1,7 @@
+Fitur yang mungkin bisa ditambahkan
+1. Automatic dropdown box, untuk master pengemudi di txtNoLambung saat di tekan maka akan mengeluarkan dropdown yang isinya adalah query dari list no lambung master kendaraan.  "Belum Dikerjakan"
+2. Automatic sum hutang dan nominal, fungsi enter pada txtCicilan dan txtKasbon akan digantikan dengan timer yang akan menghitung berapa detik setelah penulisan terakhir nilai di masing2 txt selesai dilakukan, kemudian akan otomatis menghitung total setelah timer habis. "Fitur ini dibatalkan"
+3. Automatic drag sorting table, otomatis mengurutkan ulang kolom pada tabel berdasarkan hasil drag dari masing2 kolom ke arah palingkiri.  "Belum Dikerjakan"
+4. Menggunakan progress bar untuk menampilkan kemajuan proses saat memuat report, menggunakan JProgress bar dan swingWorker. "Belum Dikerjakan"
+5. Menambahkan auto tabbed jTaskPane. "Fitur ini dibatalkan"
+6. Splash screen, dan tampilan icon untuk fast access menu di tampilan layar utama. "Telah Selesai"

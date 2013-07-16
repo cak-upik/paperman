@@ -1,0 +1,27 @@
+Created 22/07/2012 
+1. Buat agar setiap kali data sistem di rubah saat awal jalan, maka akan automatic restart UI
+2. Sebelum data sistem diset di awal jalan, menu yang tampil hanya menu File saja.
+3. Running number otomatis set tanggal sesuai sistem apabila data sistem telah di isi
+4. Running number Automatic generate ID dan Nomor saat ini saat aplikasi pertama dijalankan
+5. deteksi automatis running number(nomor saat ini) di run applikasi berikutnya
+[All Done v]
+
+Created 05/02/2013 - 06/02/2013
+1. Betulkan Dialog Transaksi Setoran, sehingga nilai angsuran dan nilai tabungan bisa dikelompokkan sesuai jenis komposisi   V checked
+2. Betulkan Dialog Transaksi Setoran, checkbox selalu ingat pilihan ini di fungsikan  V checked
+3. Perbaiki lagi sinkronisasi total hutang laporan kartu bayar untuk armada putih     V checked
+4. Fungsikan Tombol 'Buka Transaksi' di form transaksi dengan privileges yg sudah di set di role user
+5. Benahi dialog box pemberitahuan perubahan sistem sesuai role user yang mengubah saat itu
+6. Jalankan fungsi MneMonic di Tombol toolbarTransaksi
+7. Buat code autocompletion / auto fill di menu master pengemudi pada field No.Lambung
+8. Untuk menu laporan, benerin run path jasper report untuk beda OS, karena masing2 OS beda, contoh ada di LaporaKartuPembayaran armada biru    V checked
+9. Input bonus bulanan di tambah kan jenis armada
+10. Buat form Tentang di manu Bantuan
+11. Sinkronisasi manajemen piutang dengan laporan kartu pembayaran
+
+Created 06/02/2013
+1. Buat design buku panduan program paperman
+2. Isi Konten nya
+3. Buat pdf preview buku nya (versi pra release)
+4. Konsultasi buku
+5. Rampung kan
