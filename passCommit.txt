@@ -1,3 +1,3 @@
 User = muhammadtaufik92@gmail.com
 pass = WD5Dy4tm7Pb5
-jajal git commit
+jajal gi diff
