@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="LaporanTransaksiSetoran" language="groovy" pageWidth="1008" pageHeight="612" orientation="Landscape" columnWidth="968" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="297"/>
+	<property name="ireport.y" value="0"/>
+	<parameter name="date" class="java.util.Date"/>
+	<queryString>
+		<![CDATA[SELECT
+     tr_setoran.`id` AS tr_setoran_id,
+     tr_setoran.`setoran_counter` AS tr_setoran_setoran_counter,
+     tr_setoran.`tglJatuhTempo` AS tr_setoran_tglJatuhTempo,
+     tr_setoran.`tglSPO` AS tr_setoran_tglSPO,
+     tr_setoran.`tglSetoran` AS tr_setoran_tglSetoran,
+     tr_setoran.`total_hutang` AS tr_setoran_total_hutang,
+     tr_setoran.`total_setoran` AS tr_setoran_total_setoran,
+     pengemudi.`nama` AS pengemudi_nama,
+     pengemudi.`nrp` AS pengemudi_nrp,
+     pengemudi.`id_ref_kendaraan` AS pengemudi_id_ref_kendaraan,
+     kendaraan.`id` AS kendaraan_id,
+     kendaraan.`noLambung` AS kendaraan_noLambung,
+     tr_setoran_detail.`id` AS tr_setoran_detail_id,
+     tr_setoran_detail.`cicilanOther` AS tr_setoran_detail_cicilanOther,
+     tr_setoran_detail.`angsuran` AS tr_setoran_detail_angsuran,
+     tr_setoran_detail.`pembayaran` AS tr_setoran_detail_pembayaran,
+     tr_setoran_detail.`kasbon` AS tr_setoran_detail_kasbon,
+     tr_setoran_detail.`keterangan` AS tr_setoran_detail_keterangan,
+     tr_setoran_detail.`over_time` AS tr_setoran_detail_over_time,
+     tr_setoran_detail.`tabungan` AS tr_setoran_detail_tabungan
+FROM
+     `kendaraan` kendaraan INNER JOIN `pengemudi` pengemudi ON kendaraan.`id` = pengemudi.`id_ref_kendaraan`
+     INNER JOIN `tr_setoran_detail` tr_setoran_detail ON pengemudi.`id` = tr_setoran_detail.`id_pengemudi`
+     AND kendaraan.`id` = tr_setoran_detail.`id_kendaraan`
+     INNER JOIN `tr_setoran` tr_setoran ON tr_setoran_detail.`id_setoran` = tr_setoran.`id`]]>
+	</queryString>
+	<field name="nLambung" class="java.lang.Integer"/>
+	<field name="nrp" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="setKe" class="java.lang.Integer"/>
+	<field name="tglJatuhTempo" class="java.util.Date"/>
+	<field name="tglSPO" class="java.util.Date"/>
+	<field name="angsuran" class="java.math.BigDecimal"/>
+	<field name="tabungan" class="java.math.BigDecimal"/>
+	<field name="kasbon" class="java.math.BigDecimal"/>
+	<field name="bayarKasbon" class="java.math.BigDecimal"/>
+	<field name="cicilanKas" class="java.math.BigDecimal"/>
+	<field name="overtime" class="java.math.BigDecimal"/>
+	<field name="totalAngsur" class="java.math.BigDecimal"/>
+	<field name="keterangan" class="java.lang.String"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="110" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="172" height="16"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[PT. MANDALA SATATA GAMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="16" width="172" height="20"/>
+				<textElement>
+					<font size="12"/>
+				</textElement>
+				<text><![CDATA[VIRGO TAXI - SURABAYA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="70" width="262" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[LAPORAN SETORAN LIMO HARIAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="286" y="90" width="134" height="20"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle"/>
+				<text><![CDATA[TANGGAL S P O :]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="868" y="0" width="100" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<text><![CDATA[HALAMAN]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="430" y="90" width="118" height="20"/>
+				<textElement verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$P{date}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="32" splitType="Stretch">
+			<staticText>
+				<reportElement x="0" y="0" width="23" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="10"/>
+				</textElement>
+				<text><![CDATA[No.LB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="23" y="0" width="57" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NRP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="252" y="0" width="79" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TANGGAL
+JATUH TEMPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="410" y="0" width="85" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[ANGSURAN
+SETORAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="80" y="0" width="135" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[NAMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="495" y="0" width="70" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TABUNGAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="215" y="0" width="37" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[SETOR
+KE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="565" y="0" width="71" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[KASBON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="707" y="0" width="64" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[CICILAN
+KS/BS/KB]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="636" y="0" width="71" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[BAYAR KASBON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="771" y="0" width="63" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[OVERTIME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="834" y="0" width="67" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TERIMA
+KAS]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="901" y="0" width="67" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[KET]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="331" y="0" width="79" height="32"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<text><![CDATA[TANGGAL
+SPO]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="88" splitType="Stretch">
+			<textField>
+				<reportElement x="0" y="0" width="23" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nLambung}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="23" y="0" width="57" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nrp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="80" y="0" width="135" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="215" y="0" width="37" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{setKe}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="252" y="0" width="79" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tglJatuhTempo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="331" y="0" width="79" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tglSPO}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="410" y="0" width="85" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{angsuran}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="495" y="0" width="70" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{tabungan}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="565" y="0" width="71" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{kasbon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="636" y="0" width="71" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{bayarKasbon}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="707" y="0" width="64" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{cicilanKas}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="771" y="0" width="63" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{overtime}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="834" y="0" width="67" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{totalAngsur}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="901" y="0" width="67" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle"/>
+				<textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band height="45" splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band splitType="Stretch"/>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>
