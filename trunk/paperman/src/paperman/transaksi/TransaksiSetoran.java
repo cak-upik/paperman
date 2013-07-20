@@ -708,6 +708,7 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
     }
 
     private void LoadFormToDatabase() {
+        
         if (sto == null) {
             sto = new setoran();
             stoDet = new setoranDetail();

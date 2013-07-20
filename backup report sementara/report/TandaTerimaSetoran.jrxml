@@ -1,0 +1,349 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="TandaTerimaSetoran" language="groovy" pageWidth="612" pageHeight="396" orientation="Landscape" columnWidth="572" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+	<property name="ireport.zoom" value="1.0"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="1"/>
+	<parameter name="lambung" class="java.lang.Integer"/>
+	<parameter name="setKe" class="java.lang.Integer"/>
+	<field name="nLambung" class="java.lang.Integer"/>
+	<field name="nrp" class="java.lang.String"/>
+	<field name="nama" class="java.lang.String"/>
+	<field name="setoranKe" class="java.lang.Integer"/>
+	<field name="jatuhTempo" class="java.util.Date"/>
+	<field name="spo" class="java.util.Date"/>
+	<field name="ket" class="java.lang.String"/>
+	<field name="angsuran" class="java.math.BigDecimal"/>
+	<field name="tabungan" class="java.math.BigDecimal"/>
+	<field name="kasbon" class="java.math.BigDecimal"/>
+	<field name="bayarKasbon" class="java.math.BigDecimal"/>
+	<field name="overtime" class="java.math.BigDecimal"/>
+	<field name="cicilanLain" class="java.math.BigDecimal"/>
+	<field name="totalAngsuran" class="java.math.BigDecimal"/>
+	<field name="totalHutang" class="java.math.BigDecimal"/>
+	<field name="kode" class="java.lang.String"/>
+	<group name="DETAIL"/>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="51" splitType="Stretch">
+			<staticText>
+				<reportElement x="207" y="30" width="159" height="20"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TANDA TERIMA SETORAN (LIMO)]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="0" width="131" height="16"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PT. MANDALA SATATA GAMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="0" y="16" width="131" height="14"/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[VIRGO TAXI - SURABAYA]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="50" width="572" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<staticText>
+				<reportElement x="469" y="0" width="19" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO.]]></text>
+			</staticText>
+			<textField>
+				<reportElement x="488" y="0" width="84" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kode}]]></textFieldExpression>
+			</textField>
+		</band>
+	</title>
+	<pageHeader>
+		<band splitType="Stretch"/>
+	</pageHeader>
+	<columnHeader>
+		<band height="114" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="0" width="94" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NO. LAMBUNG]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="16" width="94" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NRP]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="48" width="94" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SETORAN KE]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="64" width="94" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[JATUH TEMPO	]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="32" width="94" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[NAMA]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="80" width="94" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TGL. SPO]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="96" width="94" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[KETERANGAN]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="113" width="572" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement x="104" y="16" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nrp}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="32" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="64" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{jatuhTempo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="80" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{spo}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="96" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{ket}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="0" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{lambung}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="104" y="48" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$P{setKe}]]></textFieldExpression>
+			</textField>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="112" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="48" width="121" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[PEMBAYARAN KASBON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="293" y="96" width="94" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TERIMA KASIR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="32" width="121" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[KASBON]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="16" width="121" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[TABUNGAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="64" width="121" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[OVER TIME]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="0" width="121" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[ANGSURAN SETORAN]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="80" width="121" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[CICILAN KS/BS/KB]]></text>
+			</staticText>
+			<textField pattern="#,##0">
+				<reportElement x="387" y="16" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{tabungan}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="387" y="32" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{kasbon}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="387" y="48" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{bayarKasbon}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="387" y="64" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{overtime}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="387" y="80" width="100" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{cicilanLain}]]></textFieldExpression>
+			</textField>
+			<textField pattern="#,##0">
+				<reportElement x="387" y="96" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalAngsuran}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="385" y="94" width="100" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField pattern="#,##0">
+				<reportElement x="387" y="0" width="100" height="16"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{angsuran}]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<columnFooter>
+		<band splitType="Stretch"/>
+	</columnFooter>
+	<pageFooter>
+		<band height="57" splitType="Stretch">
+			<staticText>
+				<reportElement x="10" y="18" width="100" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[KASIR]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="387" y="18" width="100" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="9"/>
+				</textElement>
+				<text><![CDATA[PENGEMUDI]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="10" y="0" width="144" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<text><![CDATA[SALDO HUTANG S/D HARI INI]]></text>
+			</staticText>
+			<line>
+				<reportElement x="0" y="15" width="572" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+			<textField pattern="#,##0">
+				<reportElement x="387" y="0" width="100" height="14"/>
+				<textElement verticalAlignment="Middle">
+					<font size="8" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{totalHutang}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="388" y="41" width="100" height="16"/>
+				<textElement textAlignment="Center" verticalAlignment="Middle">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{nama}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement x="0" y="0" width="572" height="1"/>
+				<graphicElement>
+					<pen lineStyle="Dashed"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageFooter>
+	<summary>
+		<band splitType="Stretch"/>
+	</summary>
+</jasperReport>

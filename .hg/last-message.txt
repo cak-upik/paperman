@@ -1,0 +1,15 @@
+~ [FIXED] Almost Done
+
+
+TO BE NEXT UPDATE
+~ Fixing bonus bulanan
+~ Fixing Form & Laporan Taksi Putih
+
+[NEED TO CHECK LATER]
+~ Apabila terdapat hutang maka di hitung hutang nya mulai dari kasbon + overtime
++ cicilan - (pembayaran kasbon + total terima kasir hari ini)
+~ Tgl Jatuh tempo di set berurutan sesuai tgl jatuh tempo awal jalan pd master
+kendaraan, selanjutnya otomati mengikuti tanggal setoran hari ini
+~ Tgl SPO bisa diloncati, default sesuai tgl jatuh tempo -1
+
+Commit@Saturday11082012 17:16
