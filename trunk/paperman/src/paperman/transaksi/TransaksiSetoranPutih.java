@@ -40,7 +40,6 @@ import paperman.model.TransaksiStatus;
 import paperman.model.aksiClosing;
 import paperman.model.closingBulananPutih;
 import paperman.model.codeGenerator;
-import paperman.model.isClosedFor;
 import paperman.model.isClosedStatus;
 import paperman.model.kendaraanPutih;
 import paperman.model.komposisiSetoran;
@@ -337,22 +336,22 @@ public class TransaksiSetoranPutih extends javax.swing.JInternalFrame implements
         String overtime = stoDetPutih.getOvtime().toString();
         String cicilan = stoDetPutih.getKS().toString();
         int konfirmasi = JOptionPane.showConfirmDialog(this,
-                                "Anda Yakin Akan Menghapus Data Ini ? ?\n" +
-                                "Rincian :\n" +
-                                "Kode Setoran = " + kodeSetoran + "\n" +
-                                "No.Lambung = " + noLambung + "\n" +
-                                "NRP =  " + nrp + "\n" +
-                                "Nama = " + nama + "\n" +
-                                "Setoran Ke = " + setoranCount + "\n" +
-                                "Tgl. Jatuh Tempo =  " + jatuhTempo + "\n" +
-                                "Tgl. SPO = " + tglSPO + "\n" +
-                                "Angsuran = " + angsuran + "\n" +
-                                "Tabungan = " + tabungan + "\n" +
-                                "Kasbon = " + kasbon + "\n" +
-                                "Bayar Kasbon = " + bayarKasbon + "\n" +
-                                "Over Time= " + overtime + "\n" +
-                                "Cicilan= " + cicilan,
-                                "Konfirmasi Hapus Data", option, JOptionPane.QUESTION_MESSAGE);
+                "Anda Yakin Akan Menghapus Data Ini ? ?\n"
+                + "Rincian :\n"
+                + "Kode Setoran = " + kodeSetoran + "\n"
+                + "No.Lambung = " + noLambung + "\n"
+                + "NRP =  " + nrp + "\n"
+                + "Nama = " + nama + "\n"
+                + "Setoran Ke = " + setoranCount + "\n"
+                + "Tgl. Jatuh Tempo =  " + jatuhTempo + "\n"
+                + "Tgl. SPO = " + tglSPO + "\n"
+                + "Angsuran = " + angsuran + "\n"
+                + "Tabungan = " + tabungan + "\n"
+                + "Kasbon = " + kasbon + "\n"
+                + "Bayar Kasbon = " + bayarKasbon + "\n"
+                + "Over Time= " + overtime + "\n"
+                + "Cicilan= " + cicilan,
+                "Konfirmasi Hapus Data", option, JOptionPane.QUESTION_MESSAGE);
         if (konfirmasi == JOptionPane.OK_OPTION) {
             Main.getTransaksiService().delete(stoPutih);
             LoadDatabaseToTable();
@@ -693,7 +692,7 @@ public class TransaksiSetoranPutih extends javax.swing.JInternalFrame implements
         }
         if (!listClosingBulananSaldoAwalPutih.isEmpty()) {
             closingBulananPutih clbPth = Main.getTransaksiService().findClosingPutihByRefNoLambung(new Integer(txtNoLambung.getText()));
-            if(clbPth !=null && clbPth.getActClosing().equals(aksiClosing.DO_CLOSING_SALDO_AWAL)) {
+            if (clbPth != null && clbPth.getActClosing().equals(aksiClosing.DO_CLOSING_SALDO_AWAL)) {
                 clbPth.setActClosing(aksiClosing.NOPE);
                 Main.getTransaksiService().save(clbPth);
             }
@@ -1341,7 +1340,9 @@ public class TransaksiSetoranPutih extends javax.swing.JInternalFrame implements
         if (evt.getKeyCode() == KeyEvent.VK_ENTER || evt.getKeyChar() == '\n') {
             drivePutih = new pengemudiPutih();
             kendPutih = new kendaraanPutih();
+            Date spo = new Date();
             int i = 0;
+            int a = 0;
             checkJalanStatus.setVisible(true);
             checkJalanStatus.setEnabled(true);
             lblJalanStatus.setVisible(true);
@@ -1350,30 +1351,97 @@ public class TransaksiSetoranPutih extends javax.swing.JInternalFrame implements
                 if (listPengemudiPutih.get(i).getKendPutih().getNoLambung().toString().startsWith(txtNoLambung.getText())) {
                     txtNRP.setText(listPengemudiPutih.get(i).getNrp());
                     txtNama.setText(listPengemudiPutih.get(i).getNama());
-                    List<setoranPutih> listSTOPutih = Main.getTransaksiService().findLastTglJatuhTempoPutih(JalanStatus.J);
-                    if (!listSTOPutih.isEmpty()) {
-                        dateJatuhTempo.setDate(new DateTime(listSTOPutih.get(0).getTglJatuhTempo().getTime()).plusDays(1).toDate());
-                        dateSPO.setDate(sys.getTglKerja());
-                    } else {
-                        if (listSetoranPutih.isEmpty()) {
-                            dateJatuhTempo.setDate(listPengemudiPutih.get(i).getKendPutih().getTglJatuhTempo());
-                        } else {
-                            dateJatuhTempo.setDate(Main.getTransaksiService().findLastTglJatuhTempoPutih(JalanStatus.M).get(0).getTglJatuhTempo());
-                        }
-                        dateSPO.setDate(sys.getTglKerja());
-                    }
                     txtKeterangan.setText(listPengemudiPutih.get(i).getKendPutih().getKeterangan());
                     drivePutih.setId(listPengemudiPutih.get(i).getId());
                     kendPutih.setId(listPengemudiPutih.get(i).getKendPutih().getId());
+                    if (!listSetoranPutih.isEmpty()) {
+                        if (Main.getSistemService().findBonusBulanan(komposisiPutih.getNamaKomposisi() + "BONUS BULANAN") != null) {
+                            listStoDetPutih = Main.getTransaksiService().findLastSetoranDetailPutihByLambung(new Integer(txtNoLambung.getText()));
+                        } else {
+                            listStoDetPutih = Main.getTransaksiService().findSetoranDetailPutihByLambung(new Integer(txtNoLambung.getText()), sys.getTglKerja());
+                        }
+                        spo = Main.getTransaksiService().getLatestSetoranPutihCount().get(0).getTglSPO();
+                        List<setoranPutih> listSTOPutih = Main.getTransaksiService().findLastTglJatuhTempoPutih(JalanStatus.J);
+                        if (!listSTOPutih.isEmpty()) {
+                            dateJatuhTempo.setDate(new DateTime(listSTOPutih.get(0).getTglJatuhTempo().getTime()).plusDays(1).toDate());
+                            dateSPO.setDate(sys.getTglKerja());
+                        } else {
+                            if (listSetoranPutih.isEmpty()) {
+                                dateJatuhTempo.setDate(listPengemudiPutih.get(i).getKendPutih().getTglJatuhTempo());
+                            } else {
+                                dateJatuhTempo.setDate(Main.getTransaksiService().findLastTglJatuhTempoPutih(JalanStatus.M).get(0).getTglJatuhTempo());
+                            }
+                            dateSPO.setDate(sys.getTglKerja());
+                        }
+                    } else {
+                        dateJatuhTempo.setDate(listPengemudiPutih.get(i).getKendPutih().getTglJatuhTempo());
+                        dateSPO.setDate(sys.getTglKerja());
+                    }
+                    if(listClosingBulananSaldoAwalPutih.isEmpty()) {
+                        if(!listSetoranPutih.isEmpty()) {
+                            if(!listStoDetPutih.isEmpty()) {
+                                setoranCounter = listStoDetPutih.get(0).getSetor_map_putih().getCounter_setoran();
+                                setoranCounter++;
+                                txtSetoranCounter.setText(String.valueOf(setoranCounter));
+                            }else {
+                                setoranCounter = 1;
+                                txtSetoranCounter.setText(String.valueOf(setoranCounter));
+                            }
+                        } else {
+                            setoranCounter = 1;
+                            txtSetoranCounter.setText(String.valueOf(setoranCounter));
+                        }
+                    }else {
+                        for(; a < listClosingBulananSaldoAwalPutih.size(); a++) {
+                            if(listClosingBulananSaldoAwalPutih.get(a).getActClosing().equals(aksiClosing.DO_CLOSING_SALDO_AWAL)) {
+                                if(listClosingBulananSaldoAwalPutih.get(a).getRefNoLambung().compareTo(new Integer(txtNoLambung.getText()))==0) {
+                                    refNoLambung = Main.getTransaksiService().findClosingPutihByRefNoLambung(new Integer(txtNoLambung.getText()));
+                                    if(refNoLambung !=null) {
+                                        setoranCounter = refNoLambung.getRefSetoranKe();
+                                        setoranCounter++;
+                                        txtSetoranCounter.setText(String.valueOf(setoranCounter));
+                                        break;
+                                    }else {
+                                        if(!listSetoranPutih.isEmpty()) {
+                                            if(!listStoDetPutih.isEmpty()) {
+                                                setoranCounter = listStoDetPutih.get(0).getSetor_map_putih().getCounter_setoran();
+                                                setoranCounter++;
+                                                txtSetoranCounter.setText(String.valueOf(setoranCounter));
+                                            }else {
+                                                setoranCounter = 1;
+                                                txtSetoranCounter.setText(String.valueOf(setoranCounter));
+                                            }
+                                        }else {
+                                            txtSetoranCounter.setText("1");
+                                        }
+                                        break;
+                                    }
+                                }
+                            }else {
+                                if(!listSetoranPutih.isEmpty()) {
+                                    if(!listStoDetPutih.isEmpty()) {
+                                        setoranCounter = listStoDetPutih.get(0).getSetor_map_putih().getCounter_setoran();
+                                        setoranCounter++;
+                                        txtSetoranCounter.setText(String.valueOf(setoranCounter));
+                                    }else {
+                                        setoranCounter = 1;
+                                        txtSetoranCounter.setText(String.valueOf(setoranCounter));
+                                    }
+                                }else {
+                                    txtSetoranCounter.setText("1");
+                                }
+                            }
+                        }
+                    }
                 }
             }
             if (!listSetoranPutih.isEmpty() && !listClosingBulananSaldoAwalPutih.isEmpty()) {
                 BigDecimal tKasbon = BigDecimal.ZERO;
                 BigDecimal tBayar = BigDecimal.ZERO;
                 BigDecimal tCicilan = BigDecimal.ZERO;
-                tKasbon = Main.getTransaksiService().sumKasbonPutih(new Integer(txtNoLambung.getText()), dateSPO.getDate(), dateSPO.getDate()).add(listClosingBulananSaldoAwalPutih.get(0).getTotalKas());
-                tBayar = Main.getTransaksiService().sumBayarKasbonPutih(new Integer(txtNoLambung.getText()), dateSPO.getDate(), dateSPO.getDate()).add(listClosingBulananSaldoAwalPutih.get(0).getTotalBayarKas());
-                tCicilan = Main.getTransaksiService().sumCicilanPutih(new Integer(txtNoLambung.getText()), dateSPO.getDate(), dateSPO.getDate()).add(listClosingBulananSaldoAwalPutih.get(0).getTotalCicilan());
+                tKasbon = Main.getTransaksiService().sumKasbonPutih(new Integer(txtNoLambung.getText()), spo, spo).add(Main.getTransaksiService().findClosingPutihByRefNoLambung(new Integer(txtNoLambung.getText())).getTotalKas());
+                tBayar = Main.getTransaksiService().sumBayarKasbonPutih(new Integer(txtNoLambung.getText()), spo, spo).add(Main.getTransaksiService().findClosingPutihByRefNoLambung(new Integer(txtNoLambung.getText())).getTotalBayarKas());
+                tCicilan = Main.getTransaksiService().sumCicilanPutih(new Integer(txtNoLambung.getText()), spo, spo).add(Main.getTransaksiService().findClosingPutihByRefNoLambung(new Integer(txtNoLambung.getText())).getTotalCicilan());
 //                hutang = Main.getTransaksiService().sumHutangPutih(new Integer(txtNoLambung.getText()), TransaksiStatus.U);
                 hutang = tKasbon.subtract(tBayar).subtract(tCicilan);
 //                sumSetoran = Main.getTransaksiService().sumSetoran(new Integer(txtNoLambung.getText()));
@@ -1396,8 +1464,8 @@ public class TransaksiSetoranPutih extends javax.swing.JInternalFrame implements
                 System.out.println("SumSetoran = " + sumSetoran);
                 System.out.println("Total Hutang Hari Ini = " + hutangToday);
                 lblHutang.setText(rupiahFormatter.format(hutangToday));
-                lblRupiahHutang.setText("Total Yang Harus Di Bayar = " + hutangToday.add(TextComponentUtils.parseNumberToBigDecimal(txtAngsuran.getText())).add(TextComponentUtils.parseNumberToBigDecimal(txtTabungan.getText())));
-            } else if (!listSetoranPutih.isEmpty() && listClosingBulananSaldoAwalPutih.isEmpty()) {
+                lblRupiahHutang.setText("Total Yang Harus Di Bayar = " + rupiahFormatter.format(hutangToday.add(TextComponentUtils.parseNumberToBigDecimal(txtAngsuran.getText())).add(TextComponentUtils.parseNumberToBigDecimal(txtTabungan.getText()))));
+    /**/        } else if (!listSetoranPutih.isEmpty() && listClosingBulananSaldoAwalPutih.isEmpty()) {
                 hutang = Main.getTransaksiService().sumHutangPutih(new Integer(txtNoLambung.getText()), TransaksiStatus.U);
                 if (hutang != null && hutang.compareTo(BigDecimal.ZERO) <= 0) {
                     hutangToday = BigDecimal.ZERO;

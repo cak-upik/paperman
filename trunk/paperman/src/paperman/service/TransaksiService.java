@@ -34,7 +34,9 @@ public interface TransaksiService {
     public setoran findByCode(Integer id);
     public List<setoranDetail> findSetoranNoLambungReturned(Date thisMonth);
     public List<setoranDetail> findSetoranDetailByLambung(Integer lambung, Date tglSetoran);
+    public List<setoranDetailPutih> findSetoranDetailPutihByLambung(Integer lambung, Date tglSetoran);
     public List<setoranDetail> findLastSetoranDetailByLambung(Integer lambung);
+    public List<setoranDetailPutih> findLastSetoranDetailPutihByLambung(Integer lambung);
     public setoranPutih findByCodePutih(Integer id);
     public List<setoran> getLatestSetoranCount();
     public List<setoran> findLastTglJatuhTempo(JalanStatus status);
