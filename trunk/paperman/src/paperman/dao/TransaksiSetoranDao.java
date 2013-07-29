@@ -452,4 +452,16 @@ public class TransaksiSetoranDao extends BaseDaoHibernate<setoran> {
                 .list();
         return listSetoran;
     }
+
+    public List<setoran> getLatestSetoranCount(Integer lambung) {
+        List<setoran> listSetoran = sessionFactory.getCurrentSession()
+                .createQuery("from setoran st where st.detail.kemudi.kend.noLambung = :lb order by st.counter_setoran desc")
+                .setInteger("lb", lambung)
+                .setMaxResults(1)
+                .list();
+        for(setoran sto : listSetoran) {
+            Hibernate.initialize(sto.getDetail());
+        }
+        return listSetoran;
+    }
 }

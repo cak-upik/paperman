@@ -326,7 +326,7 @@ public class TransaksiSetoranPutihDao extends BaseDaoHibernate<setoranPutih> {
         return listSetoranPutih;
     }
 
-    public List<setoranPutih> getLatestSetoranPutihCount() {
+    public List<setoranPutih> getLatestSetoranCount() {
         List<setoranPutih> listSetoranPutih = sessionFactory.getCurrentSession()
                 .createQuery("from setoranPutih order by counter_setoran desc")
                 .setMaxResults(1)

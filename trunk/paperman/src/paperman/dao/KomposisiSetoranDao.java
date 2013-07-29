@@ -7,7 +7,6 @@ package paperman.dao;
 
 import java.util.List;
 import org.springframework.stereotype.Repository;
-import paperman.Main;
 import paperman.model.komposisiSetoran;
 
 /**
@@ -32,7 +31,7 @@ public class KomposisiSetoranDao extends BaseDaoHibernate<komposisiSetoran> {
 
     public List<komposisiSetoran> findBonusBulanan(String komposisi) {
         List<komposisiSetoran> listBonus = sessionFactory.getCurrentSession()
-                .createQuery("from komposisiSetoran ks where ks.namaKomposisi like %:data% and ks.genCodeRef is not null")
+                .createQuery("from komposisiSetoran ks where ks.namaKomposisi=:data and ks.genCodeRef is not null")
                 .setString("data", komposisi)
                 .list();
         return listBonus;

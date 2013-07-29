@@ -100,6 +100,10 @@ public class TransaksiServiceImpl implements TransaksiService {
         return stoDao.getLatestSetoranCount();
     }
 
+    public List<setoran> getLatestSetoranCount(Integer lambung) {
+        return stoDao.getLatestSetoranCount(lambung);
+    }
+
     public void save(setoranDetail stoDetail) {
         stDetDao.save(stoDetail);
     }
@@ -193,7 +197,7 @@ public class TransaksiServiceImpl implements TransaksiService {
     }
 
     public List<setoranPutih> getLatestSetoranPutihCount() {
-        return stPutihDao.getLatestSetoranPutihCount();
+        return stPutihDao.getLatestSetoranCount();
     }
 
     public List<setoranPutih> setoranPutihRecord() {
@@ -206,14 +210,6 @@ public class TransaksiServiceImpl implements TransaksiService {
 
     public List<setoranDetail> findLastSetoranDetailByLambung(Integer lambung) {
         return stDetDao.findLastSetoranDetailByLambung(lambung);
-    }
-
-    public List<setoranDetailPutih> findLastSetoranDetailPutihByLambung(Integer lambung) {
-        return stDetailPutihDao.findLastSetoranDetailPutihByLambung(lambung);
-    }
-
-    public List<setoranDetailPutih> findSetoranDetailPutihByLambung(Integer lambung, Date tglSetoran) {
-        return stDetailPutihDao.findSetoranDetailPutihByLambung(lambung, tglSetoran);
     }
 
     public setoranPutih findBySpecificPutih(Integer lambung, Date tglSetoran, Integer setoranKe) {
