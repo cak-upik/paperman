@@ -80,6 +80,10 @@ public class TransaksiServiceImpl implements TransaksiService {
         return stoDao.findByCode(id);
     }
 
+    public Integer getTotalSetoranCount() {
+        return stoDao.getTotalSetoranCount();
+    }
+
     public List<setoranDetail> findSetoranNoLambungReturned(Date thisMonth) {
         return stoDao.findSetoranNoLambungReturned(thisMonth);
     }

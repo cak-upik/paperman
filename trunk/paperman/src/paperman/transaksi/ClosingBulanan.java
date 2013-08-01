@@ -53,6 +53,7 @@ public class ClosingBulanan extends javax.swing.JInternalFrame {
     private sistem sys;
     private Object[] data;
     public static boolean closingState = false;
+    private boolean doneUpdatingOpenedClosing = false;
 
     public static void inisialisasi() {
         formClosing = new ClosingBulanan();
@@ -76,9 +77,7 @@ public class ClosingBulanan extends javax.swing.JInternalFrame {
     }
 
     private boolean cekValidClosing() {
-        if (Main.getTransaksiService().findAnyClosingBulananValid(sys.getTglKerja(), isClosedFor.CLOSING_BULAN) == null) {
-            return true;
-        } else if (Main.getTransaksiService().findAnyLeftClosingBulananValid(sys.getTglKerja(), isClosedStatus.AVAILABLE) != null) {
+        if (Main.getTransaksiService().findAnyLeftClosingBulananValid(sys.getTglKerja(), isClosedStatus.AVAILABLE) != null) {
             return true;
         } else {
             return false;
@@ -297,15 +296,33 @@ public class ClosingBulanan extends javax.swing.JInternalFrame {
             } else if (cmbJenisArmada.getSelectedIndex() == 1) {
                 if (OpenClosedTrans.isUpdatingClosing == true) {
                     List<setoranDetail> listSdt = Main.getTransaksiService().findAvailableSetoran(isClosedStatus.AVAILABLE, OpenClosedTrans.lastClosing, OpenClosedTrans.lastClosing, OpenClosedTrans.lastSelectedTagArmada);
-                    for (int i = 0; i <= listSdt.size() - 1; i++) {
+                    for (int i = 0; i < listSdt.size() - 1; i++) {
                         closingBulanan clb = Main.getTransaksiService().findClosingByRefNoLambung(listSdt.get(i).getKemudi().getKend().getNoLambung(), OpenClosedTrans.lastClosing);
                         setoran stor = listSdt.get(i).getSetor_map();
                         stor.setClosedStatus(isClosedStatus.CLOSED);
                         stor.setIdClosing(clb);
                         Main.getTransaksiService().save(stor);
                     }
+                    for (int a = 0; a < OpenClosedTrans.lastUpdated.size(); a++) {
+                        closingBulanan clb = Main.getTransaksiService().findClosingByRefNoLambung(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), OpenClosedTrans.lastClosing);
+                        clb.setTotalSetor(Main.getTransaksiService().sumSetoran(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), OpenClosedTrans.lastClosing, OpenClosedTrans.lastClosing).add(Main.getTransaksiService().findClosingByRefNoLambung(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), new DateTime(OpenClosedTrans.lastClosing).minusMonths(1).toDate()).getTotalSetor()));
+                        clb.setTotalAngsuran(Main.getTransaksiService().sumAngsuran(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), OpenClosedTrans.lastClosing, OpenClosedTrans.lastClosing).add(Main.getTransaksiService().findClosingByRefNoLambung(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), new DateTime(OpenClosedTrans.lastClosing).minusMonths(1).toDate()).getTotalAngsuran()));
+                        clb.setTotalTabungan(Main.getTransaksiService().sumTabungan(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), OpenClosedTrans.lastClosing, OpenClosedTrans.lastClosing).add(Main.getTransaksiService().findClosingByRefNoLambung(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), new DateTime(OpenClosedTrans.lastClosing).minusMonths(1).toDate()).getTotalTabungan()));
+                        clb.setTotalBayarKas(Main.getTransaksiService().sumBayarKasbon(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), OpenClosedTrans.lastClosing, OpenClosedTrans.lastClosing).add(Main.getTransaksiService().findClosingByRefNoLambung(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), new DateTime(OpenClosedTrans.lastClosing).minusMonths(1).toDate()).getTotalBayarKas()));
+                        clb.setTotalOvertime(Main.getTransaksiService().sumOvertime(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), OpenClosedTrans.lastClosing, OpenClosedTrans.lastClosing).add(Main.getTransaksiService().findClosingByRefNoLambung(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), new DateTime(OpenClosedTrans.lastClosing).minusMonths(1).toDate()).getTotalOvertime()));
+                        clb.setTotalCicilan(Main.getTransaksiService().sumCicilan(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), OpenClosedTrans.lastClosing, OpenClosedTrans.lastClosing).add(Main.getTransaksiService().findClosingByRefNoLambung(OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung(), new DateTime(OpenClosedTrans.lastClosing).minusMonths(1).toDate()).getTotalCicilan()));
+                        clb.setPeriodeBulan(bulanClosing.getDate());
+                        clb.setTglClosing(bulanClosing.getDate());
+                        clb.setClosedFor(isClosedFor.CLOSING_SALDO_BULAN_LALU);
+                        Main.getTransaksiService().save(clb);
+                        System.out.println("lastUpdatedClosedTransLambung = "+OpenClosedTrans.lastUpdated.get(a).getKemudi().getKend().getNoLambung().toString());
+                    }
                     OpenClosedTrans.isUpdatingClosing = false;
-                    if(TransaksiSetoran.getTransaksiSetoran().isVisible()) {
+                    doneUpdatingOpenedClosing = true;
+                    OpenClosedTrans.lastClosing = null;
+                    OpenClosedTrans.lastSelectedTagArmada = "";
+                    OpenClosedTrans.lastUpdated = null;
+                    if (TransaksiSetoran.getTransaksiSetoran().isVisible()) {
                         TransaksiSetoran.destroy();
                     }
                 }
@@ -333,7 +350,7 @@ public class ClosingBulanan extends javax.swing.JInternalFrame {
                         destroy();
                     }
                 } else {
-                    if (OpenClosedTrans.isUpdatingClosing == false) {
+                    if (doneUpdatingOpenedClosing == true) {
                         JOptionPane.showMessageDialog(this, "Proses Closing Transaksi Yang Dibuka Sukses Dilakukan", "Pesan Sistem", JOptionPane.INFORMATION_MESSAGE);
                     } else {
                         JOptionPane.showMessageDialog(this, "Tanggal Ini Belum Mencapai Akhir Bulan\nClosing Bulanan Tidak Dapat Dilakukan", "Pesan Sistem", JOptionPane.INFORMATION_MESSAGE);

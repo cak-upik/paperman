@@ -32,6 +32,7 @@ public interface TransaksiService {
     public void delete(setoran sto);
     public void delete(setoranPutih stPutih);
     public setoran findByCode(Integer id);
+    public Integer getTotalSetoranCount();
     public List<setoranDetail> findSetoranNoLambungReturned(Date thisMonth);
     public List<setoranDetail> findSetoranDetailByLambung(Integer lambung, Date tglSetoran);
     public List<setoranDetail> findLastSetoranDetailByLambung(Integer lambung);

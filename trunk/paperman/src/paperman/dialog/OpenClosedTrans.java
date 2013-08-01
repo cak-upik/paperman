@@ -32,6 +32,7 @@ public class OpenClosedTrans extends javax.swing.JDialog {
     public static boolean isUpdatingClosing = false;
     public static Date lastClosing;
     public static String lastSelectedTagArmada = "";
+    public static List<setoranDetail> lastUpdated = new ArrayList<setoranDetail>();
 
     public OpenClosedTrans() {
         super(Main.getMainMenu(), true);

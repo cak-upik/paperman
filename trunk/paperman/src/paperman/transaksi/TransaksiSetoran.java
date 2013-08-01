@@ -85,6 +85,7 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
     private sistem sys;
     private setoran sto;
     private setoranDetail stoDet;
+    private setoranDetail stoDetUpdate;
     private List<codeGenerator> generateCode;
     private codeGenerator genCode;
     private komposisiSetoran komposisisetoran;
@@ -199,8 +200,9 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
     }
 
     private Integer totalPage(Integer limitSize) {
-        listSetoranDetail = Main.getTransaksiService().findAvailableSetoran(isClosedStatus.AVAILABLE, komposisisetoran.getAngsuran(), komposisisetoran.getTabungan(), komposisisetoran.getNamaKomposisi());
-        totalPage = listSetoranDetail.size() / limitSize;
+        Integer count = Main.getTransaksiService().getTotalSetoranCount();
+        totalPage = count / limitSize;
+        System.out.println("totalPage = "+totalPage);
         return totalPage;
     }
 
@@ -281,6 +283,10 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
 
     private void aksiTambah() {
         listSetoran = Main.getTransaksiService().getLatestSetoranCount();
+        if(OpenClosedTrans.isUpdatingClosing) {
+            JOptionPane.showMessageDialog(this, "Tidak Dapat Menambah Setoran Ketika Sedang Membuka Closed Transaksi\nHarap Lakukan Closing Terlebih Dahulu ! !","Pesan Sistem", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
         if (listClosingBulananSaldoAwal == null) {
             listClosingBulananSaldoAwal = Main.getTransaksiService().closingBulananRecordForSaldoAwal();
         }
@@ -489,6 +495,17 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
     }
 
     private void cekDuplicate() {
+            if(OpenClosedTrans.isUpdatingClosing) {
+            if(stoDetUpdate == null) {
+                stoDetUpdate = new setoranDetail();
+            }
+            stoDetUpdate.setId(stoDet.getId());
+            stoDetUpdate.setSetor_map(stoDet.getSetor_map());
+            stoDetUpdate.setKemudi(stoDet.getKemudi());
+            stoDetUpdate.setKend(stoDet.getKend());
+            OpenClosedTrans.lastUpdated.add(stoDetUpdate);
+            System.out.println("array of last update closing = "+OpenClosedTrans.lastUpdated.size());
+        }
         if (validateForm()) {
             LoadFormToDatabase();
             Main.getTransaksiService().save(sto);
@@ -501,7 +518,6 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
             JOptionPane.showMessageDialog(this, "Proses Penyimpanan Telah Berhasil", "Pemberitahuan", JOptionPane.INFORMATION_MESSAGE);
             tblSetoran.getSelectionModel().clearSelection();
             toolbarButtonTransaksi.defaultMode();
-            OpenClosedTrans.isUpdatingClosing = false;
             sto = null;
             stoDet = null;
             ListStoDetail = null;
@@ -847,9 +863,10 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
 
     private void LoadDatabaseToTable() {
         txtShowPage.setText(String.valueOf(limit));
+        lblTotalHal.setText("Total "+String.valueOf(totalPage(limit))+" Halaman");
         currentPos = limit;
         if (OpenClosedTrans.isUpdatingClosing == true) {
-            listSetoranDetail = Main.getTransaksiService().findAvailableSetoran(isClosedStatus.CLOSED, OpenClosedTrans.lastClosing, OpenClosedTrans.lastClosing, OpenClosedTrans.lastSelectedTagArmada, offset, limit);
+            listSetoranDetail = Main.getTransaksiService().findAvailableSetoran(isClosedStatus.AVAILABLE, OpenClosedTrans.lastClosing, OpenClosedTrans.lastClosing, OpenClosedTrans.lastSelectedTagArmada, offset, limit);
             tblSetoran.setModel(new TransaksiSetoranTableModel(listSetoranDetail));
             initColumnSize();
         } else {
@@ -1069,7 +1086,7 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel4Layout.createSequentialGroup()
                 .addComponent(jLabel12)
-                .addContainerGap(1011, Short.MAX_VALUE))
+                .addContainerGap(1126, Short.MAX_VALUE))
         );
         jPanel4Layout.setVerticalGroup(
             jPanel4Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1121,7 +1138,7 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(dateCariSetoran, javax.swing.GroupLayout.PREFERRED_SIZE, 129, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jLabel19)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(txtShowPage, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -1138,7 +1155,7 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
                 .addGap(202, 202, 202))
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 1014, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(88, Short.MAX_VALUE))
+                .addContainerGap(206, Short.MAX_VALUE))
         );
 
         jPanel1Layout.linkSize(javax.swing.SwingConstants.HORIZONTAL, new java.awt.Component[] {btnBack, btnNext});
@@ -1172,7 +1189,7 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
                 .addGap(195, 195, 195))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap(31, Short.MAX_VALUE)
-                .addComponent(btnOpenClosedTransaction, javax.swing.GroupLayout.DEFAULT_SIZE, 26, Short.MAX_VALUE)
+                .addComponent(btnOpenClosedTransaction, javax.swing.GroupLayout.PREFERRED_SIZE, 26, Short.MAX_VALUE)
                 .addGap(195, 195, 195))
         );
 
@@ -1194,7 +1211,7 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel5Layout.createSequentialGroup()
                 .addComponent(jLabel13)
-                .addContainerGap(1008, Short.MAX_VALUE))
+                .addContainerGap(1123, Short.MAX_VALUE))
         );
         jPanel5Layout.setVerticalGroup(
             jPanel5Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -1519,7 +1536,7 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
                         .addGroup(jPanel2Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(txtCicilan, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel17)))
-                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 292, Short.MAX_VALUE))
+                    .addComponent(jSeparator1, javax.swing.GroupLayout.DEFAULT_SIZE, 301, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -1542,7 +1559,7 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 652, Short.MAX_VALUE)
+            .addComponent(jSplitPane1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 661, Short.MAX_VALUE)
         );
 
         pack();
@@ -1834,7 +1851,6 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
                             if (totalHutang.signum() == -1) {
                                 totalHutang = totalHutang.negate();
                             }
-                            // ------ Bila Tidak Berhutang -----//
                             if (totalHutang.compareTo(BigDecimal.ZERO) == 0) {
                                 lblNominal.setText(rupiahFormatter.format(totalKasbon));
                                 lblHutang.setText(rupiahFormatter.format(totalHutang));
@@ -1842,9 +1858,8 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
                                 sto.setPayedStatus(TransaksiStatus.L);
                                 System.out.println("payed = " + sto.getPayedStatus());
                             }
-                            // ------ Bila Mempunyai Hutang ----//
+
                             if (totalHutang.compareTo(BigDecimal.ZERO) > 0) {
-                                // --- keadaan pelunasan hutang dan angsuran lebih dari jumlah yang dilunasi ----//
                                 if (totalAngsuran.add(totalKasbon).compareTo(mustPaid) >= 0) {
                                     totalSurplus = totalSurplus.add(totalAngsuran.add(totalKasbon).subtract(mustPaid));
                                     lblNominal.setText(rupiahFormatter.format(totalKasbon.add(totalAngsuran)));
@@ -2196,8 +2211,8 @@ public class TransaksiSetoran extends javax.swing.JInternalFrame implements List
     private void btnOpenClosedTransactionActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenClosedTransactionActionPerformed
         // TODO add your handling code here:
         listSetoranDetail = new OpenClosedTrans().showDialog();
-        if (listSetoranDetail == null) {
-            return;
+        if (listSetoranDetail.isEmpty()) {
+            LoadDatabaseToTable();
         } else {
             tblSetoran.setEnabled(true);
             tblSetoran.setModel(new TransaksiSetoranTableModel(listSetoranDetail));

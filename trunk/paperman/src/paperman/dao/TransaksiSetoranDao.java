@@ -464,4 +464,12 @@ public class TransaksiSetoranDao extends BaseDaoHibernate<setoran> {
         }
         return listSetoran;
     }
+
+    public Integer getTotalSetoranCount() {
+        return (Integer) sessionFactory.getCurrentSession()
+                .createQuery("from setoran")
+                .list()
+                .size();
+    }
+
 }

@@ -1342,7 +1342,6 @@ public class TransaksiSetoranPutih extends javax.swing.JInternalFrame implements
             drivePutih = new pengemudiPutih();
             kendPutih = new kendaraanPutih();
             int i = 0;
-            int a = 0;
             checkJalanStatus.setVisible(true);
             checkJalanStatus.setEnabled(true);
             lblJalanStatus.setVisible(true);
@@ -1351,14 +1350,6 @@ public class TransaksiSetoranPutih extends javax.swing.JInternalFrame implements
                 if (listPengemudiPutih.get(i).getKendPutih().getNoLambung().toString().startsWith(txtNoLambung.getText())) {
                     txtNRP.setText(listPengemudiPutih.get(i).getNrp());
                     txtNama.setText(listPengemudiPutih.get(i).getNama());
-                    txtKeterangan.setText(listPengemudiPutih.get(i).getKendPutih().getKeterangan());
-                    drivePutih.setId(listPengemudiPutih.get(i).getId());
-                    kendPutih.setId(listPengemudiPutih.get(i).getKendPutih().getId());
-                    if(!listSetoranPutih.isEmpty()) {
-                        if(Main.getSistemService().findBonusBulananPutih() !=null) {
-//                            listStoDetPutih = Main.getTransaksiService().findLas
-                        }
-                    }
                     List<setoranPutih> listSTOPutih = Main.getTransaksiService().findLastTglJatuhTempoPutih(JalanStatus.J);
                     if (!listSTOPutih.isEmpty()) {
                         dateJatuhTempo.setDate(new DateTime(listSTOPutih.get(0).getTglJatuhTempo().getTime()).plusDays(1).toDate());

@@ -58,12 +58,12 @@ public class Main {
     }
 
     public static void initApplicationContext() {
-//        appContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
-        appContext = new ClassPathXmlApplicationContext("classpath:clientContext.xml");
-        masterService = (MasterService) appContext.getBean("masterServices");
-        transaksiService = (TransaksiService) appContext.getBean("transaksiServices");
-        sistemService = (SistemService) appContext.getBean("sistemServices");
-        reportService = (ReportService) appContext.getBean("reportServices");
+        appContext = new ClassPathXmlApplicationContext("classpath:applicationContext.xml");
+//        appContext = new ClassPathXmlApplicationContext("classpath:clientContext.xml");
+        masterService = (MasterService) appContext.getBean("masterService");
+        transaksiService = (TransaksiService) appContext.getBean("transaksiService");
+        sistemService = (SistemService) appContext.getBean("sistemService");
+        reportService = (ReportService) appContext.getBean("reportService");
 //        dataSource = (DataSource) appContext.getBean("dataSource");
     }
 
